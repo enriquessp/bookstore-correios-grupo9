@@ -1,0 +1,21 @@
+
+Casos de teste UC-14
+
+	1 - Calcula preço e prazo
+		Entradas: 												PESO, LARGURA, ALTURA, COMPRIMENTO, CEP, TIPO DE ENTREGA.
+		SAÍDA PADRÃO:											VALOR, TEMPO DE ENTREGA.
+		SAÍDA ALT A (Validação de parametros):					MENSAGEM ERRO, CODIGO ERRO.
+		SAÍDA ALT B (Validação de integraçãoo com correios):	MENSAGEM
+
+	2 - Armazenar dados de entrega no sistema
+		Entradas: 												VALOR, TEMPO DE ENTREGA.
+		Saída: 													ID do pedido.
+		SAÍDA ALT: 												MENSAGEM ERRO, CODIGO ERRO.
+
+	3 - 
+
+Casos de teste UC-15
+
+	1 - Consultar status da entrega
+		Entradas:	CODIGO DE RASTREIO
+		Saída: 		CODIGO DE RASTREIO, STATUS DA ENTREGA
