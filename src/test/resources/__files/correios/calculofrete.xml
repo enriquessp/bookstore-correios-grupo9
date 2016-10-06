@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://www.w3.org/2005/08/addressing">
+    <s:Header>
+    </s:Header>
+    <s:Body xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <CalcPrecoPrazoResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://tempuri.org/">
+            <CalcPrecoPrazoResult xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://tempuri.org/">
+                <Servicos>
+                    <cServico>
+                        <Codigo>0</Codigo>
+                        <Valor>0,00</Valor>
+                        <PrazoEntrega>0</PrazoEntrega>
+                        <ValorMaoPropria>0,00</ValorMaoPropria>
+                        <ValorAvisoRecebimento>0,00</ValorAvisoRecebimento>
+                        <ValorValorDeclarado>0,00</ValorValorDeclarado>
+                        <EntregaDomiciliar></EntregaDomiciliar>
+                        <EntregaSabado></EntregaSabado>
+                        <Erro>-1</Erro>
+                        <MsgErro>Codigo de servico invalido.</MsgErro>
+                        <ValorSemAdicionais>0,00</ValorSemAdicionais>
+                        <obsFim></obsFim>
+                    </cServico>
+                </Servicos>
+            </CalcPrecoPrazoResult>
+        </CalcPrecoPrazoResponse>
+    </s:Body>
+</s:Envelope>
