@@ -1,9 +1,8 @@
-package br.unicamp.exemplo.runner;
+package br.unicamp.exemplo.runner.uc14;
 
 import br.com.correios.ws.CResultado;
-import br.com.correios.ws.CalcPrecoPrazoWS;
 import br.com.correios.ws.CalcPrecoPrazoWSSoap;
-import br.unicamp.util.ServiceLocatorUtil;
+import br.unicamp.exemplo.steps.uc14.CorreiosUtil;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -20,9 +19,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 public class TestWsCorreiosComWiremock {
 
 
-    private final static String FILEPATH = "correios/calculofrete.xml";
-    private static final String URL_CORREIOS = "http://localhost:8888/correios";
-
     @ClassRule
     public static WireMockClassRule wireMockRule = new WireMockClassRule(8888);
 
@@ -32,11 +28,9 @@ public class TestWsCorreiosComWiremock {
     @Test
     public void testPerformAirShopping() {
 
-	stubFor(post(urlMatching("/correios")).willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/soap+xml").withBodyFile(FILEPATH)));
+	stubFor(post(urlMatching("/correios")).willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/soap+xml").withBodyFile(CorreiosUtil.FILEPATH)));
 
-	final CalcPrecoPrazoWSSoap calcPrecoPrazoWSSoap = new CalcPrecoPrazoWS().getCalcPrecoPrazoWSSoap12();
-	ServiceLocatorUtil.configurarUrlEndpoint(calcPrecoPrazoWSSoap, URL_CORREIOS);
-
+	final CalcPrecoPrazoWSSoap calcPrecoPrazoWSSoap = CorreiosUtil.generateServicoWsCorreio(CorreiosUtil.URL_CORREIOS);
 
 	final CResultado cResultado = calcPrecoPrazoWSSoap.calcPrecoPrazo("", "", "", "", "", "", 0, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
 									 BigDecimal.ZERO, "", BigDecimal.ZERO, "");

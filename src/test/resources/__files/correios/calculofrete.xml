@@ -7,17 +7,17 @@
             <CalcPrecoPrazoResult xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://tempuri.org/">
                 <Servicos>
                     <cServico>
-                        <Codigo>0</Codigo>
-                        <Valor>0,00</Valor>
+                        <Codigo>123</Codigo>
+                        <Valor>50.00</Valor>
                         <PrazoEntrega>0</PrazoEntrega>
-                        <ValorMaoPropria>0,00</ValorMaoPropria>
-                        <ValorAvisoRecebimento>0,00</ValorAvisoRecebimento>
-                        <ValorValorDeclarado>0,00</ValorValorDeclarado>
+                        <ValorMaoPropria>0.00</ValorMaoPropria>
+                        <ValorAvisoRecebimento>0.00</ValorAvisoRecebimento>
+                        <ValorValorDeclarado>0.00</ValorValorDeclarado>
                         <EntregaDomiciliar></EntregaDomiciliar>
                         <EntregaSabado></EntregaSabado>
                         <Erro>-1</Erro>
                         <MsgErro>Codigo de servico invalido.</MsgErro>
-                        <ValorSemAdicionais>0,00</ValorSemAdicionais>
+                        <ValorSemAdicionais>0.00</ValorSemAdicionais>
                         <obsFim></obsFim>
                     </cServico>
                 </Servicos>
