@@ -49,11 +49,21 @@ public class CalculadorPrecoFreteSteps {
         assertNotNull(this.cep);
     }
 
+    @Given("^Dado um produto peso negativo$")
+    public void tenho_um_produto_e_cep() {
+        cep = "5334533";
+        produto = new Produto(-5, 10, 10, 10);
+    }
+
     @When("^quando o cliente perguntar qual o valor do frete$")
     public void cliente_colicita_preco_frete_do_produto() throws Throwable {
         configuraWireMockCorreioValido();
 
-    	 this.precoFrete = calculadorFretePrazo.calcularPreco(produto, cep);
+        try {
+            this.precoFrete = calculadorFretePrazo.calcularPreco(produto, cep);
+        } catch (Throwable exc) {
+            this.throwable = exc;
+        }
     }
 
     @Then("^o resultado deve ser (\\d+)$")

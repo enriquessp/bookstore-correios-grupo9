@@ -18,6 +18,9 @@ public class CalculadorPrecoFrete {
     }
 
     public double calcularPreco(Produto produto, String cep) {
+    	if (produto.temDimensaoNegativa()) {
+			throw new RuntimeException("Peso/largura/altura e comprimento nao podem ter valor negativo");
+		}
         CResultado resultadoConsultaCorreio = servicoCorreios.calcPrecoPrazo("empresa",
 									     "", //senha
 									     "", //servico

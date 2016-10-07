@@ -15,3 +15,11 @@ Scenario: Calcular o frete com servico dos Correios fora
 	"""
 	java.net.SocketException: Unexpected end of file from server
 	"""
+
+Scenario: Calcular o frete com alguma dimensão do produto inválida
+	Given Dado um produto peso negativo
+	When quando o cliente perguntar qual o valor do frete
+	Then deveria apresentar um erro com a mensagem:
+	"""
+	Peso/largura/altura e comprimento nao podem ter valor negativo
+	"""

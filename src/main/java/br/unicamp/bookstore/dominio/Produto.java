@@ -50,4 +50,8 @@ public class Produto {
     public void setComprimento(int comprimento) {
         this.comprimento = comprimento;
     }
+
+    public boolean temDimensaoNegativa() {
+        return peso < 0 || largura < 0 || comprimento < 0 || altura < 0;
+    }
 }

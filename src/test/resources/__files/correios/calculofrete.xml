@@ -16,7 +16,7 @@
                         <EntregaDomiciliar></EntregaDomiciliar>
                         <EntregaSabado></EntregaSabado>
                         <Erro>-1</Erro>
-                        <MsgErro>Codigo de servico invalido.</MsgErro>
+                        <MsgErro></MsgErro>
                         <ValorSemAdicionais>0.00</ValorSemAdicionais>
                         <obsFim></obsFim>
                     </cServico>
