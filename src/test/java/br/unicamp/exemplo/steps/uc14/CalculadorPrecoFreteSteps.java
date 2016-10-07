@@ -3,6 +3,7 @@ package br.unicamp.exemplo.steps.uc14;
 import br.com.correios.ws.CalcPrecoPrazoWSSoap;
 import br.unicamp.bookstore.dominio.Produto;
 import br.unicamp.bookstore.uc14.CalculadorPrecoFrete;
+import br.unicamp.exemplo.util.CorreiosUtil;
 import com.github.tomakehurst.wiremock.http.Fault;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;

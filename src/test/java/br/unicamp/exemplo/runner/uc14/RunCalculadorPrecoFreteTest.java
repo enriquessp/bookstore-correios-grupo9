@@ -1,12 +1,11 @@
 package br.unicamp.exemplo.runner.uc14;
 
-import br.unicamp.exemplo.steps.uc14.CorreiosUtil;
+import br.unicamp.exemplo.util.CorreiosUtil;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.runner.RunWith;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;

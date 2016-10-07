@@ -1,4 +1,4 @@
-package br.unicamp.exemplo.steps.uc14;
+package br.unicamp.exemplo.util;
 
 import br.com.correios.ws.CalcPrecoPrazoWS;
 import br.com.correios.ws.CalcPrecoPrazoWSSoap;

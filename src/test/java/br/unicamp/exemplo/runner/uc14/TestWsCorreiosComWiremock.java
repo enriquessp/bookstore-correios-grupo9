@@ -2,11 +2,10 @@ package br.unicamp.exemplo.runner.uc14;
 
 import br.com.correios.ws.CResultado;
 import br.com.correios.ws.CalcPrecoPrazoWSSoap;
-import br.unicamp.exemplo.steps.uc14.CorreiosUtil;
+import br.unicamp.exemplo.util.CorreiosUtil;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import org.junit.Assert;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.math.BigDecimal;
