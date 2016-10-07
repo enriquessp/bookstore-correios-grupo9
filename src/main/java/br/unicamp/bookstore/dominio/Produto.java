@@ -1,4 +1,4 @@
-package br.unicamp.dominio;
+package br.unicamp.bookstore.dominio;
 
 /**
  * Created by enrique1 on 10/4/16.

@@ -1,8 +1,8 @@
-package br.unicamp.exemplo.uc14;
+package br.unicamp.bookstore.uc14;
 
 import br.com.correios.ws.CResultado;
 import br.com.correios.ws.CalcPrecoPrazoWSSoap;
-import br.unicamp.dominio.Produto;
+import br.unicamp.bookstore.dominio.Produto;
 
 import java.math.BigDecimal;
 
