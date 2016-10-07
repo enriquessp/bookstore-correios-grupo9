@@ -22,11 +22,13 @@ public class TestWsCorreiosComWiremock {
     @ClassRule
     public static WireMockClassRule wireMockRule = new WireMockClassRule(8888);
 
+/*
     @Rule
     public WireMockClassRule instanceRule = wireMockRule;
+*/
 
     @Test
-    public void testPerformAirShopping() {
+    public void testServicoCorreios() {
 
 	stubFor(post(urlMatching("/correios")).willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/soap+xml").withBodyFile(CorreiosUtil.FILEPATH)));
 

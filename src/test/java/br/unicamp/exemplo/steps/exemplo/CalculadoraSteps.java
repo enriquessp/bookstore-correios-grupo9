@@ -1,4 +1,4 @@
-package br.unicamp.exemplo.steps;
+package br.unicamp.exemplo.steps.exemplo;
 
 
 import static org.junit.Assert.assertEquals;

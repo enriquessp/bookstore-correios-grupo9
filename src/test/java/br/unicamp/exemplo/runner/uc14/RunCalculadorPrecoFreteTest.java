@@ -21,7 +21,7 @@ public class RunCalculadorPrecoFreteTest {
 
     // Wiremock
     @ClassRule public static WireMockClassRule wireMockRule = new WireMockClassRule(8888);
-    @Rule public             WireMockClassRule instanceRule = wireMockRule;
+    /*@Rule public             WireMockClassRule instanceRule = wireMockRule;*/
 
     @Before
     public void prepare() {
