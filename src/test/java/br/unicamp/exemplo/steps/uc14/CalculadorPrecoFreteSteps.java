@@ -6,6 +6,7 @@ import br.unicamp.bookstore.uc14.CalculadorPrecoFrete;
 import br.unicamp.exemplo.util.CorreiosUtil;
 import com.github.tomakehurst.wiremock.http.Fault;
 import cucumber.api.java.Before;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -21,8 +22,9 @@ public class CalculadorPrecoFreteSteps {
     private CalculadorPrecoFrete calculadorFretePrazo;
 
     // Parametros
-    private Produto produto;
+    protected Produto produto;
     private String cep;
+    protected int retornoCorreios;
 
     // Possiveis retornos
     private double precoFrete;
@@ -55,6 +57,11 @@ public class CalculadorPrecoFreteSteps {
         produto = new Produto(-5, 10, 10, 10);
     }
 
+    @And("^tipo de entrega:$")
+    public void cliente_seleciona_tipo_de_entrega(String tipoEntrega){
+    	retornoCorreios = calculadorFretePrazo.validaTipoEntrega(this.produto, this.cep, tipoEntrega);
+    }
+
     @When("^quando o cliente perguntar qual o valor do frete$")
     public void cliente_colicita_preco_frete_do_produto() throws Throwable {
         configuraWireMockCorreioValido();
@@ -65,7 +72,7 @@ public class CalculadorPrecoFreteSteps {
             this.throwable = exc;
         }
     }
-
+    
     @Then("^o resultado deve ser (\\d+)$")
     public void o_resultado_deveria_ser(double precoFreteEsperado) throws Throwable {
         assertEquals("Preco deveria ser igual a "+precoFreteEsperado, precoFreteEsperado, precoFrete, 0);
