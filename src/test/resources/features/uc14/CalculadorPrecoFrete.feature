@@ -5,6 +5,10 @@ Feature: Calculador de preco do frete
 
 Scenario: Calcular o frete
 	Given Dado um produto valido com peso 10 largura 5 altura 15 comprimento 20 e cep 13220901
+	And tipo de entrega:
+	"""
+	PAC
+	"""
 	When quando o cliente perguntar qual o valor do frete
 	Then o resultado deve ser 50
 

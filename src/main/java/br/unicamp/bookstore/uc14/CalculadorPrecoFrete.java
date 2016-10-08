@@ -35,9 +35,29 @@ public class CalculadorPrecoFrete {
 									     "", //maoPropria
 									     BigDecimal.ZERO, //valorDeclarado
 									     "" //avisoRecebimento
-	);
+        		);
 
         return Double.valueOf(resultadoConsultaCorreio.getServicos().getCServico().get(0).getValor());
     }
+
+	public int validaTipoEntrega(Produto produto, String cep, String tipoEntrega) {
+        CResultado resultadoConsultaCorreio = servicoCorreios.calcPrecoPrazo("empresa",
+				     "", //senha
+				     "", //servico
+				     cep,
+				     cep,
+				     "" + produto.getPeso(),
+				     0,//formato
+				     BigDecimal.valueOf(produto.getComprimento()),
+				     BigDecimal.valueOf(produto.getAltura()),
+				     BigDecimal.valueOf(produto.getLargura()),
+				     BigDecimal.ZERO, //diametro
+				     "", //maoPropria
+				     BigDecimal.ZERO, //valorDeclarado
+				     "" //avisoRecebimento
+        		);
+
+        return Integer.parseInt(resultadoConsultaCorreio.getServicos().getCServico().get(0).getErro());
+	}
 
 }
