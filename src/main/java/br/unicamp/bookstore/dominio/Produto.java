@@ -9,6 +9,7 @@ public class Produto {
     private int largura;
     private int altura;
     private int comprimento;
+    private String codigoRastreio;
 
     public Produto() {}
 
@@ -53,5 +54,13 @@ public class Produto {
 
     public boolean temDimensaoNegativa() {
         return peso < 0 || largura < 0 || comprimento < 0 || altura < 0;
+    }
+
+    public String getCodigoRastreio() {
+        return codigoRastreio;
+    }
+
+    public void setCodigoRastreio(String codigoRastreio) {
+        this.codigoRastreio = codigoRastreio;
     }
 }
