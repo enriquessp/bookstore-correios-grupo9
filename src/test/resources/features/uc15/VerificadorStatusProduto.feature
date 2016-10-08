@@ -11,7 +11,7 @@ Scenario: Consultar status de entrega
     When quando o cliente perguntar qual o status do pedido
     Then o resultado deve ser:
   """
-  Saiu para entrega
+  Entregue
   """
 
 Scenario: Consultar status de entrega com servico dos Correios fora

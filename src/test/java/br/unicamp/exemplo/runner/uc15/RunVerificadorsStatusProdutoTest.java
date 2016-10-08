@@ -20,7 +20,6 @@ public class RunVerificadorsStatusProdutoTest {
 
     // Wiremock
     @ClassRule public static WireMockClassRule wireMockRule = new WireMockClassRule(8888);
-    /*@Rule public             WireMockClassRule instanceRule = wireMockRule;*/
 
     @Before
     public void prepare() {

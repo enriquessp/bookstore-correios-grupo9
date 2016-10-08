@@ -3,12 +3,12 @@ package br.unicamp.exemplo.steps.uc15;
 import br.unicamp.bookstore.dominio.Produto;
 import br.unicamp.bookstore.uc15.VerificadorStatusProduto;
 import br.unicamp.exemplo.util.CorreiosUtil;
+import br.unicamp.util.ClientStatusPedidoCorreios;
 import com.github.tomakehurst.wiremock.http.Fault;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.assertj.core.api.Assertions;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.Assert.assertEquals;
@@ -23,12 +23,12 @@ public class VerificadorStatusProdutoSteps {
     private Produto produto;
 
     // Possiveis retornos
-    private String status;
+    private ClientStatusPedidoCorreios.ConsultaStatusResponse status;
     private Throwable throwable;
 
     @Before
     public void setUp() {
-	    calculadorFretePrazo = new VerificadorStatusProduto();
+	    calculadorFretePrazo = new VerificadorStatusProduto(new ClientStatusPedidoCorreios(CorreiosUtil.URL_CORREIOS));
     	throwable = null;
     }
 
@@ -53,11 +53,19 @@ public class VerificadorStatusProdutoSteps {
 
     @Then("^o resultado deve ser:$")
     public void o_resultado_deveria_ser(String statusCorreios) throws Throwable {
-        assertEquals("Status do produto nos correios deveria ser igual a "+statusCorreios, statusCorreios, this.status);
+        assertEquals("Status do produto nos correios deveria ser igual a "+statusCorreios, statusCorreios, this.status.getStatus());
     }
 
     private void configuraWireMockCorreioValido() {
-        stubFor(post(urlMatching("/correios")).willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/x-www-form-urlencoded").withBodyFile(CorreiosUtil.FILEPATH_STATUS)));
+        stubFor(
+                post(urlMatching("/correios"))
+                    .willReturn(
+                            aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", "application/x-www-form-urlencoded")
+                                .withBodyFile(CorreiosUtil.FILEPATH_STATUS)
+                    )
+        );
     }
 
     private void configuraWireMockCorreioFora() {
