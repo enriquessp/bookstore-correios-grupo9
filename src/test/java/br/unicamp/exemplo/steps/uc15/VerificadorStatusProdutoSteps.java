@@ -1,8 +1,6 @@
 package br.unicamp.exemplo.steps.uc15;
 
-import br.com.correios.ws.CalcPrecoPrazoWSSoap;
 import br.unicamp.bookstore.dominio.Produto;
-import br.unicamp.bookstore.uc14.CalculadorPrecoFrete;
 import br.unicamp.bookstore.uc15.VerificadorStatusProduto;
 import br.unicamp.exemplo.util.CorreiosUtil;
 import com.github.tomakehurst.wiremock.http.Fault;

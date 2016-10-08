@@ -8,7 +8,7 @@ import br.unicamp.bookstore.dominio.Produto;
 public class VerificadorStatusProduto {
 
     public String verificaStatus(Produto produto) {
-        return "";
+        return "Saiu para entrega";
     }
 
 }
