@@ -41,8 +41,42 @@ public class VerificadorStatusProdutoSteps {
     }
 
     @When("^quando o cliente perguntar qual o status do pedido$")
-    public void cliente_colicita_preco_frete_do_produto() throws Throwable {
+    public void cliente_colicita_status_do_pedido() throws Throwable {
         configuraWireMockCorreioValido();
+
+        try {
+            this.status = calculadorFretePrazo.verificaStatus(produto);
+        } catch (Throwable exc) {
+            this.throwable = exc;
+        }
+    }
+
+    @When("^quando o cliente perguntar qual o status da entrega$")
+    public void cliente_solicita_status_do_pedido_e_pedido_nao_encontrado() throws Throwable {
+        configuraWireMockCorreioPedidoNaoEncontrado();
+
+        try {
+            this.status = calculadorFretePrazo.verificaStatus(produto);
+        } catch (Throwable exc) {
+            this.throwable = exc;
+        }
+    }
+
+    private void configuraWireMockCorreioPedidoNaoEncontrado() {
+        stubFor(
+                post(urlMatching("/correios"))
+                        .willReturn(
+                                aResponse()
+                                        .withStatus(200)
+                                        .withHeader("Content-Type", "application/x-www-form-urlencoded")
+                                        .withBodyFile(CorreiosUtil.FILEPATH_STATUS_NAO_ENCONTRADO)
+                        )
+        );
+    }
+
+    @When("^quando o servico dos Correios estiver fora e o cliente perguntar qual o status da entrega$")
+    public void cliente_colicita_status_do_pedido_com_correios_fora() throws Throwable {
+        configuraWireMockCorreioFora();
 
         try {
             this.status = calculadorFretePrazo.verificaStatus(produto);
@@ -69,7 +103,12 @@ public class VerificadorStatusProdutoSteps {
     }
 
     private void configuraWireMockCorreioFora() {
-        stubFor(post(urlMatching("/correios")).willReturn(aResponse().withFault(Fault.EMPTY_RESPONSE)));
+        stubFor(
+                post(urlMatching("/correios"))
+                        .willReturn(aResponse()
+                        .withFault(Fault.EMPTY_RESPONSE)
+                        )
+        );
     }
 
 }
