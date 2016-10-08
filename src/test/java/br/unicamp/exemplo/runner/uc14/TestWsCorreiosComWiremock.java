@@ -29,7 +29,14 @@ public class TestWsCorreiosComWiremock {
     @Test
     public void testServicoCorreios() {
 
-	stubFor(post(urlMatching("/correios")).willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/soap+xml").withBodyFile(CorreiosUtil.FILEPATH)));
+	stubFor(
+	        post(urlMatching("/correios"))
+            .willReturn(aResponse()
+                            .withStatus(200)
+                            .withHeader("Content-Type", "application/soap+xml")
+                            .withBodyFile(CorreiosUtil.FILEPATH)
+                        )
+            );
 
 	final CalcPrecoPrazoWSSoap calcPrecoPrazoWSSoap = CorreiosUtil.generateServicoWsCorreio(CorreiosUtil.URL_CORREIOS);
 
@@ -37,6 +44,7 @@ public class TestWsCorreiosComWiremock {
 									 BigDecimal.ZERO, "", BigDecimal.ZERO, "");
 
 	Assert.assertNotNull(cResultado);
+    Assert.assertEquals(50, Double.valueOf(cResultado.getServicos().getCServico().get(0).getValor()).doubleValue(), 0);
     }
 
 }
