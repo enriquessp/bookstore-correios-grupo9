@@ -1,7 +1,7 @@
 Feature: Consultar status de entrega
   Como usuario
-  eu quero a partir de um produto e o cep de entrega calcular preco
-  para com isso nao ter que acessar diretamente os correios para ter o preco de entrega
+  eu quero a partir de um pedido e seu código de rastreio conseguir consultar o status de entrega
+  para com isso nao ter que acessar diretamente o site dos correios conseguir essa informação
 
 Scenario: Consultar status de entrega
     Given Dado um pedido valido com codigo de rastreio:
@@ -14,3 +14,24 @@ Scenario: Consultar status de entrega
   Saiu para entrega
   """
 
+Scenario: Consultar status de entrega com servico dos Correios fora
+	Given Dado um pedido valido com codigo de rastreio:
+	"""
+	AA100833276BR
+	"""
+	When quando o servico dos Correios estiver fora e o cliente perguntar qual o status da entrega
+	Then deveria apresentar um erro com a mensagem:
+	"""
+	java.net.SocketException: Unexpected end of file from server
+	"""
+
+Scenario: Consultar status de entrega ainda não identificado pelos correios
+	Given Dado um pedido valido com codigo de rastreio:
+	"""
+	AA100833276BR
+	"""
+	When quando o cliente perguntar qual o status da entrega
+	Then o resultado deve ser
+	"""
+	O objeto não é reconhecido pelos correios
+	"""
