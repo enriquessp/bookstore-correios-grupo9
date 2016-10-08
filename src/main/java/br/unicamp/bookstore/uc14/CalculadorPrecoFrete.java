@@ -21,6 +21,9 @@ public class CalculadorPrecoFrete {
     	if (produto.temDimensaoNegativa()) {
 			throw new RuntimeException("Peso/largura/altura e comprimento nao podem ter valor negativo");
 		}
+    	if (cep.isEmpty()) {
+			throw new RuntimeException("CEP não informado");
+		}
         CResultado resultadoConsultaCorreio = servicoCorreios.calcPrecoPrazo("empresa",
 									     "", //senha
 									     "", //servico

@@ -37,7 +37,7 @@ public class CalculadorPrecoFreteSteps {
     	throwable = null;
     }
 
-    @Given("^Dado um produto valido com peso (\\d+) largura (\\d+) altura (\\d+) comprimento (\\d+) e cep (\\d+)$")
+    @Given("^Dado um produto valido com peso (\\d+) largura (\\d+) altura (\\d+) comprimento (\\d+) e cep:$")
     public void tenho_um_produto_e_cep(int peso, int largura, int altura, int comprimento, String cep) throws Throwable {
         this.cep = cep;
         produto = new Produto(peso, largura, altura, comprimento);

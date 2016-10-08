@@ -4,12 +4,18 @@ Feature: Calculador de preco do frete
   para com isso nao ter que acessar diretamente os correios para ter o preco de entrega
 
 Scenario: Calcular o frete
-	Given Dado um produto valido com peso 10 largura 5 altura 15 comprimento 20 e cep 13220901
+	Given Dado um produto valido com peso 10 largura 5 altura 15 comprimento 20 e cep:
+	"""
+	13220901
+	"""
 	When quando o cliente perguntar qual o valor do frete
 	Then o resultado deve ser 50
 
 Scenario: Calcular o frete com servico dos Correios fora
-	Given Dado um produto valido com peso 10 largura 5 altura 5 comprimento 10 e cep 1232134
+	Given Dado um produto valido com peso 10 largura 5 altura 5 comprimento 10 e cep:
+	"""
+	1232134
+	"""
 	When quando o servico dos Correios estiver fora e o cliente perguntar qual o valor
 	Then deveria apresentar um erro com a mensagem:
 	"""
@@ -23,3 +29,15 @@ Scenario: Calcular o frete com alguma dimensão do produto inválida
 	"""
 	Peso/largura/altura e comprimento nao podem ter valor negativo
 	"""
+
+Scenario: Calcular o frete quando usuario nao informa o frete
+	Given Dado um produto valido com peso 10 largura 5 altura 15 comprimento 20 e cep:
+	"""
+	
+	"""
+	When quando o cliente perguntar qual o valor do frete
+	Then deveria apresentar um erro com a mensagem:
+	"""
+	CEP não informado
+	"""
+	
