@@ -25,6 +25,7 @@ public class CalculadorPrecoFreteSteps {
     protected Produto produto;
     private String cep;
     protected int retornoCorreios;
+    private String tipoEntrega;
 
     // Possiveis retornos
     private double precoFrete;
@@ -32,10 +33,8 @@ public class CalculadorPrecoFreteSteps {
 
     @Before
     public void setUp() {
-
-	final CalcPrecoPrazoWSSoap servicoCorreiosWS = CorreiosUtil.generateServicoWsCorreio(CorreiosUtil.URL_CORREIOS);
-
-	calculadorFretePrazo = new CalculadorPrecoFrete(servicoCorreiosWS);
+	    final CalcPrecoPrazoWSSoap servicoCorreiosWS = CorreiosUtil.generateServicoWsCorreio(CorreiosUtil.URL_CORREIOS);
+	    calculadorFretePrazo = new CalculadorPrecoFrete(servicoCorreiosWS);
     	throwable = null;
     }
 
@@ -57,13 +56,40 @@ public class CalculadorPrecoFreteSteps {
         produto = new Produto(-5, 10, 10, 10);
     }
 
+    @Given("Dado um produto inválido")
+    public void produto_invalido(){
+        this.produto = null;
+    }
+
+    @Given("Dado um produto inválido e um cep válido")
+    public void produto_invalido_e_cep_invalido(){
+        this.produto = null;
+        this.cep = "";
+    }
+
     @And("^tipo de entrega:$")
     public void cliente_seleciona_tipo_de_entrega(String tipoEntrega){
     	retornoCorreios = calculadorFretePrazo.validaTipoEntrega(this.produto, this.cep, tipoEntrega);
     }
 
-    @When("^quando o cliente perguntar qual o valor do frete$")
-    public void cliente_colicita_preco_frete_do_produto() throws Throwable {
+    @And("tipo de entrega selecionado:$")
+    public void tipo_de_entrega(String tipoEntrega){
+        this.tipoEntrega = tipoEntrega;
+    }
+
+    @When("^quando o cliente perguntar qual o valor do frete")
+    public void cliente_solicita_preco_frete_do_produto() throws Throwable {
+        configuraWireMockCorreioValido();
+
+        try {
+            this.precoFrete = calculadorFretePrazo.calcularPreco(produto, cep);
+        } catch (Throwable exc) {
+            this.throwable = exc;
+        }
+    }
+
+    @When ("^quando o cliente perguntar qual o tempo do frete")
+    public void cliente_solicita_tempo_do_frete() throws Throwable{
         configuraWireMockCorreioValido();
 
         try {
@@ -73,9 +99,14 @@ public class CalculadorPrecoFreteSteps {
         }
     }
     
-    @Then("^o resultado deve ser (\\d+)$")
+    @Then("^o resultado deve ser (\\d+)")
     public void o_resultado_deveria_ser(double precoFreteEsperado) throws Throwable {
         assertEquals("Preco deveria ser igual a "+precoFreteEsperado, precoFreteEsperado, precoFrete, 0);
+    }
+
+    @Then("^o retorno deve ser -(\\d)")
+    public void o_retorno_deveria_ser(double retornoEsperado) throws Throwable {
+        assertEquals("Preco deveria ser igual a "+retornoEsperado, retornoEsperado, retornoCorreios, 0);
     }
 
     @When("^quando o servico dos Correios estiver fora e o cliente perguntar qual o valor$")
@@ -100,5 +131,4 @@ public class CalculadorPrecoFreteSteps {
     private void configuraWireMockCorreioFora() {
         stubFor(post(urlMatching("/correios")).willReturn(aResponse().withFault(Fault.EMPTY_RESPONSE)));
     }
-
 }

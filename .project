@@ -6,14 +6,6 @@
 	</projects>
 	<buildSpec>
 		<buildCommand>
-<<<<<<< HEAD
-=======
-			<name>org.eclipse.xtext.ui.shared.xtextBuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-		<buildCommand>
->>>>>>> 34d23f9d3e29acd6f62ea7cb95f100a3d2ff938e
 			<name>org.eclipse.jdt.core.javabuilder</name>
 			<arguments>
 			</arguments>
@@ -27,9 +19,5 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
-<<<<<<< HEAD
-=======
-		<nature>org.eclipse.xtext.ui.shared.xtextNature</nature>
->>>>>>> 34d23f9d3e29acd6f62ea7cb95f100a3d2ff938e
 	</natures>
 </projectDescription>

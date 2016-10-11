@@ -15,8 +15,8 @@ public class CorreiosUtil {
     public static final String FILEPATH_STATUS_NAO_ENCONTRADO = "correios/statuscorreios_naoencontrado.xml";
 
     public static CalcPrecoPrazoWSSoap generateServicoWsCorreio(String URL) {
-	final CalcPrecoPrazoWSSoap calcPrecoPrazoWSSoap = new CalcPrecoPrazoWS().getCalcPrecoPrazoWSSoap12();
-	ServiceLocatorUtil.configurarUrlEndpoint(calcPrecoPrazoWSSoap, URL);
-	return calcPrecoPrazoWSSoap;
+        final CalcPrecoPrazoWSSoap calcPrecoPrazoWSSoap = new CalcPrecoPrazoWS().getCalcPrecoPrazoWSSoap12();
+        ServiceLocatorUtil.configurarUrlEndpoint(calcPrecoPrazoWSSoap, URL);
+        return calcPrecoPrazoWSSoap;
     }
 }
