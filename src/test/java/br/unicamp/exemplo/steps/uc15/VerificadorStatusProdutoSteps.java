@@ -63,18 +63,6 @@ public class VerificadorStatusProdutoSteps {
         }
     }
 
-    private void configuraWireMockCorreioPedidoNaoEncontrado() {
-        stubFor(
-                post(urlMatching("/correios"))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(200)
-                                        .withHeader("Content-Type", "application/x-www-form-urlencoded")
-                                        .withBodyFile(CorreiosUtil.FILEPATH_STATUS_NAO_ENCONTRADO)
-                        )
-        );
-    }
-
     @When("^quando o servico dos Correios estiver fora e o cliente perguntar qual o status da entrega$")
     public void cliente_colicita_status_do_pedido_com_correios_fora() throws Throwable {
         configuraWireMockCorreioFora();
@@ -105,6 +93,18 @@ public class VerificadorStatusProdutoSteps {
                                 .withHeader("Content-Type", "application/x-www-form-urlencoded")
                                 .withBodyFile(CorreiosUtil.FILEPATH_STATUS)
                     )
+        );
+    }
+
+    private void configuraWireMockCorreioPedidoNaoEncontrado() {
+        stubFor(
+                post(urlMatching("/correios"))
+                        .willReturn(
+                                aResponse()
+                                        .withStatus(200)
+                                        .withHeader("Content-Type", "application/x-www-form-urlencoded")
+                                        .withBodyFile(CorreiosUtil.FILEPATH_STATUS_NAO_ENCONTRADO)
+                        )
         );
     }
 
