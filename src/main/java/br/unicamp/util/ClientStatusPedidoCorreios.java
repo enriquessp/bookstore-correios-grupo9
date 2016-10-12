@@ -56,10 +56,8 @@ public class ClientStatusPedidoCorreios {
                 }
             }
             inStream.close();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         }
 
         return consultaStatusResponse;

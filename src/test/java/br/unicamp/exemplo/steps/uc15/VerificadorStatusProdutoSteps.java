@@ -9,6 +9,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.assertj.core.api.Assertions;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.Assert.assertEquals;
@@ -88,6 +89,11 @@ public class VerificadorStatusProdutoSteps {
     @Then("^o resultado deve ser:$")
     public void o_resultado_deveria_ser(String statusCorreios) throws Throwable {
         assertEquals("Status do produto nos correios deveria ser igual a "+statusCorreios, statusCorreios, this.status.getStatus());
+    }
+
+    @Then("^deveria apresentar um erro com a mensagem:$")
+    public void deveria_apresentar_mensagem_de_erro(String mensagemErro) throws Throwable {
+        Assertions.assertThat(throwable).isNotNull().hasMessage(mensagemErro);
     }
 
     private void configuraWireMockCorreioValido() {
