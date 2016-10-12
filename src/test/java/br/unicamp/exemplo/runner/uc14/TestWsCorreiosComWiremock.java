@@ -34,7 +34,7 @@ public class TestWsCorreiosComWiremock {
             .willReturn(aResponse()
                             .withStatus(200)
                             .withHeader("Content-Type", "application/soap+xml")
-                            .withBodyFile(CorreiosUtil.FILEPATH)
+                            .withBodyFile(CorreiosUtil.FILEPATH_CALCULO_VALIDO)
                         )
             );
 

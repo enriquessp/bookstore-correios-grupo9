@@ -25,6 +25,6 @@ public class RunBuscarEnderecoTest {
     @Before
     public void prepare() {
 	stubFor(post(urlMatching("/correios")).willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/soap+xml").withBodyFile(
-			CorreiosUtil.FILEPATH)));
+			CorreiosUtil.FILEPATH_CALCULO_VALIDO)));
     }
 }

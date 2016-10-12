@@ -40,8 +40,19 @@ public class CalculadorPrecoFrete {
 									     "" //avisoRecebimento
         		);
 
+		validaResultadoCorreio(resultadoConsultaCorreio);
+
         return Double.valueOf(resultadoConsultaCorreio.getServicos().getCServico().get(0).getValor());
     }
+
+	private void validaResultadoCorreio(CResultado resultadoConsultaCorreio) {
+		if (!resultadoConsultaCorreio.getServicos().getCServico().get(0).getErro().isEmpty()) {
+			String codigoErro = resultadoConsultaCorreio.getServicos().getCServico().get(0).getErro();
+			String mensagemErro = resultadoConsultaCorreio.getServicos().getCServico().get(0).getMsgErro();
+
+			throw new RuntimeException("Erro " + codigoErro + ": " + mensagemErro);
+		}
+	}
 
 	public int validaTipoEntrega(Produto produto, String cep, String tipoEntrega) {
         CResultado resultadoConsultaCorreio = servicoCorreios.calcPrecoPrazo("empresa",

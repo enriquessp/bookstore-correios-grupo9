@@ -47,7 +47,11 @@ Scenario: CEP inválido
 	000
 	"""
 	When quando o cliente perguntar qual o valor do frete
-	Then o retorno deve ser -3
+	Then deveria apresentar um erro com a mensagem:
+	"""
+	Erro 3: CEP invalido
+	"""
+
 
 Scenario: Calcular o frete sem um produto informado
 	Given Dado um produto inválido e um cep válido

@@ -79,8 +79,16 @@ public class CalculadorPrecoFreteSteps {
 
     @When("^quando o cliente perguntar qual o valor do frete")
     public void cliente_solicita_preco_frete_do_produto() throws Throwable {
-        configuraWireMockCorreioValido();
+        if (cep.equals("000")) {
+            configuraWireMockCorreioCepInvalido();
+        } else {
+            configuraWireMockCorreioValido();
+        }
 
+        invocarServicoCorreios();
+    }
+
+    private void invocarServicoCorreios() {
         try {
             this.precoFrete = calculadorFretePrazo.calcularPreco(produto, cep);
         } catch (Throwable exc) {
@@ -92,11 +100,7 @@ public class CalculadorPrecoFreteSteps {
     public void cliente_solicita_tempo_do_frete() throws Throwable{
         configuraWireMockCorreioValido();
 
-        try {
-            this.precoFrete = calculadorFretePrazo.calcularPreco(produto, cep);
-        } catch (Throwable exc) {
-            this.throwable = exc;
-        }
+        invocarServicoCorreios();
     }
     
     @Then("^o resultado deve ser (\\d+)")
@@ -104,7 +108,7 @@ public class CalculadorPrecoFreteSteps {
         assertEquals("Preco deveria ser igual a "+precoFreteEsperado, precoFreteEsperado, precoFrete, 0);
     }
 
-    @Then("^o retorno deve ser -(\\d)")
+    @Then("^o retorno de status dos correios deve ser (\\d)")
     public void o_retorno_deveria_ser(double retornoEsperado) throws Throwable {
         assertEquals("Preco deveria ser igual a "+retornoEsperado, retornoEsperado, retornoCorreios, 0);
     }
@@ -125,7 +129,11 @@ public class CalculadorPrecoFreteSteps {
     }
 
     private void configuraWireMockCorreioValido() {
-        stubFor(post(urlMatching("/correios")).willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/soap+xml").withBodyFile(CorreiosUtil.FILEPATH)));
+        stubFor(post(urlMatching("/correios")).willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/soap+xml").withBodyFile(CorreiosUtil.FILEPATH_CALCULO_VALIDO)));
+    }
+
+    private void configuraWireMockCorreioCepInvalido() {
+        stubFor(post(urlMatching("/correios")).willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/soap+xml").withBodyFile(CorreiosUtil.FILEPATH_CALCULO_CEP_INVALIDO)));
     }
 
     private void configuraWireMockCorreioFora() {

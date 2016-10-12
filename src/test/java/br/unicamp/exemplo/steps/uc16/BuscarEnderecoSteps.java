@@ -6,8 +6,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static org.junit.Assert.assertNotNull;
 
-import org.assertj.core.api.Assertions;
-
 import com.github.tomakehurst.wiremock.http.Fault;
 
 import br.com.correios.ws.CalcPrecoPrazoWSSoap;
@@ -57,7 +55,7 @@ public class BuscarEnderecoSteps {
     }
 
     private void configuraWireMockCorreioValido() {
-        stubFor(post(urlMatching("/correios")).willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/soap+xml").withBodyFile(CorreiosUtil.FILEPATH)));
+        stubFor(post(urlMatching("/correios")).willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/soap+xml").withBodyFile(CorreiosUtil.FILEPATH_CALCULO_VALIDO)));
     }
 
     private void configuraWireMockCorreioFora() {
