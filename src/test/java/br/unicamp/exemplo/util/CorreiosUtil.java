@@ -14,6 +14,7 @@ public class CorreiosUtil {
     public static final String FILEPATH_STATUS = "correios/statuscorreios.xml";
     public static final String FILEPATH_STATUS_NAO_ENCONTRADO = "correios/statuscorreios_naoencontrado.xml";
     public static final String FILEPATH_CALCULO_CEP_INVALIDO = "correios/calculofrete_erro_cep_invalido.xml";
+    public static final String FILEPATH_CALCULO_TIPO_ENTREGA_INVALIDO = "correios/calculofrete_erro_tipo_entrega_invalido.xml";
 
     public static CalcPrecoPrazoWSSoap generateServicoWsCorreio(String URL) {
         final CalcPrecoPrazoWSSoap calcPrecoPrazoWSSoap = new CalcPrecoPrazoWS().getCalcPrecoPrazoWSSoap12();

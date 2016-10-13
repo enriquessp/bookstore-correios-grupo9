@@ -1,6 +1,7 @@
 package br.unicamp.exemplo.steps.uc14;
 
 import br.com.correios.ws.CalcPrecoPrazoWSSoap;
+import br.unicamp.bookstore.dao.DadosDeEntregaDAO;
 import br.unicamp.bookstore.dominio.Produto;
 import br.unicamp.bookstore.uc14.CalculadorPrecoFrete;
 import br.unicamp.exemplo.util.CorreiosUtil;
@@ -11,6 +12,10 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.assertj.core.api.Assertions;
+import org.mockito.Mockito;
+import org.mockito.internal.matchers.Any;
+
+import java.sql.SQLException;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.Assert.assertEquals;
@@ -26,6 +31,7 @@ public class CalculadorPrecoFreteSteps {
     private String cep;
     protected int retornoCorreios;
     private String tipoEntrega;
+    private DadosDeEntregaDAO dadosEntregaDaoMock;
 
     // Possiveis retornos
     private double precoFrete;
@@ -33,8 +39,10 @@ public class CalculadorPrecoFreteSteps {
 
     @Before
     public void setUp() {
-	    final CalcPrecoPrazoWSSoap servicoCorreiosWS = CorreiosUtil.generateServicoWsCorreio(CorreiosUtil.URL_CORREIOS);
-	    calculadorFretePrazo = new CalculadorPrecoFrete(servicoCorreiosWS);
+        dadosEntregaDaoMock = Mockito.mock(DadosDeEntregaDAO.class);
+
+        final CalcPrecoPrazoWSSoap servicoCorreiosWS = CorreiosUtil.generateServicoWsCorreio(CorreiosUtil.URL_CORREIOS);
+	    calculadorFretePrazo = new CalculadorPrecoFrete(dadosEntregaDaoMock, servicoCorreiosWS);
     	throwable = null;
     }
 
@@ -56,15 +64,14 @@ public class CalculadorPrecoFreteSteps {
         produto = new Produto(-5, 10, 10, 10);
     }
 
-    @Given("Dado um produto inválido")
+    @Given("^Dado um produto inválido$")
     public void produto_invalido(){
         this.produto = null;
     }
 
-    @Given("Dado um produto inválido e um cep válido")
-    public void produto_invalido_e_cep_invalido(){
-        this.produto = null;
-        this.cep = "";
+    @And("^um cep válido$")
+    public void produto_invalido_e_cep_invalido(String cep){
+        this.cep = cep;
     }
 
     @And("^tipo de entrega:$")
@@ -81,11 +88,27 @@ public class CalculadorPrecoFreteSteps {
     public void cliente_solicita_preco_frete_do_produto() throws Throwable {
         if (cep.equals("000")) {
             configuraWireMockCorreioCepInvalido();
+        } else if(null != this.tipoEntrega && this.tipoEntrega.equals("XPTO")) {
+            configuraWireMockCorreioTipoEntregaInvalido();
         } else {
             configuraWireMockCorreioValido();
         }
 
         invocarServicoCorreios();
+    }
+
+    @When("^quando banco de dados fora e o cliente perguntar qual o valor do frete e quiser salvar")
+    public void cliente_solicita_preco_frete_do_e_armazenamento_em_banco_fora_do_ar() throws Throwable {
+        configuraWireMockCorreioValido();
+        configura_mock_DadosEntregaDao_Com_Banco_Fora();
+
+        invocarServicoCorreios();
+
+        try {
+            calculadorFretePrazo.salvarDadosFrete(Double.valueOf(this.precoFrete), 10);
+        } catch (Throwable exc) {
+            this.throwable = exc;
+        }
     }
 
     private void invocarServicoCorreios() {
@@ -129,14 +152,54 @@ public class CalculadorPrecoFreteSteps {
     }
 
     private void configuraWireMockCorreioValido() {
-        stubFor(post(urlMatching("/correios")).willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/soap+xml").withBodyFile(CorreiosUtil.FILEPATH_CALCULO_VALIDO)));
+        stubFor(
+            post(urlMatching("/correios"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/soap+xml")
+                        .withBodyFile(CorreiosUtil.FILEPATH_CALCULO_VALIDO)
+                )
+        );
     }
 
     private void configuraWireMockCorreioCepInvalido() {
-        stubFor(post(urlMatching("/correios")).willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/soap+xml").withBodyFile(CorreiosUtil.FILEPATH_CALCULO_CEP_INVALIDO)));
+        stubFor(
+            post(urlMatching("/correios"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/soap+xml")
+                        .withBodyFile(CorreiosUtil.FILEPATH_CALCULO_CEP_INVALIDO)
+                )
+        );
+    }
+
+    private void configuraWireMockCorreioTipoEntregaInvalido() {
+        stubFor(
+            post(urlMatching("/correios"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/soap+xml")
+                        .withBodyFile(CorreiosUtil.FILEPATH_CALCULO_TIPO_ENTREGA_INVALIDO)
+                )
+        );
     }
 
     private void configuraWireMockCorreioFora() {
-        stubFor(post(urlMatching("/correios")).willReturn(aResponse().withFault(Fault.EMPTY_RESPONSE)));
+        stubFor(
+            post(urlMatching("/correios"))
+                .willReturn(
+                    aResponse()
+                        .withFault(Fault.EMPTY_RESPONSE)
+                )
+        );
+    }
+
+    private void configura_mock_DadosEntregaDao_Com_Banco_Fora() {
+        Mockito
+            .doThrow(new RuntimeException("java.sql.SQLException: Falha ao conectar com o banco de dados"))
+            .when(dadosEntregaDaoMock).saveDadosDeEntrega(Mockito.anyDouble(), Mockito.anyInt());
     }
 }

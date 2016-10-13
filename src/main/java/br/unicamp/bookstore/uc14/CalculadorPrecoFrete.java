@@ -2,6 +2,7 @@ package br.unicamp.bookstore.uc14;
 
 import br.com.correios.ws.CResultado;
 import br.com.correios.ws.CalcPrecoPrazoWSSoap;
+import br.unicamp.bookstore.dao.DadosDeEntregaDAO;
 import br.unicamp.bookstore.dominio.Produto;
 
 import java.math.BigDecimal;
@@ -11,14 +12,19 @@ import java.math.BigDecimal;
  */
 public class CalculadorPrecoFrete {
 
-    private final CalcPrecoPrazoWSSoap servicoCorreios;
+	private final DadosDeEntregaDAO dadosDeEntregaDAO;
+	private final CalcPrecoPrazoWSSoap servicoCorreios;
 
-    public CalculadorPrecoFrete(CalcPrecoPrazoWSSoap servicoCorreios) {
-	this.servicoCorreios = servicoCorreios;
+    public CalculadorPrecoFrete(DadosDeEntregaDAO dadosDeEntregaDAO, CalcPrecoPrazoWSSoap servicoCorreios) {
+		this.dadosDeEntregaDAO = dadosDeEntregaDAO;
+		this.servicoCorreios = servicoCorreios;
     }
 
     public double calcularPreco(Produto produto, String cep) {
-    	if (produto.temDimensaoNegativa()) {
+    	if (null == produto) {
+			throw new RuntimeException("Produto inválido");
+		}
+		if (produto.temDimensaoNegativa()) {
 			throw new RuntimeException("Peso/largura/altura e comprimento nao podem ter valor negativo");
 		}
     	if (cep.isEmpty()) {
@@ -74,4 +80,7 @@ public class CalculadorPrecoFrete {
         return Integer.parseInt(resultadoConsultaCorreio.getServicos().getCServico().get(0).getErro());
 	}
 
+	public void salvarDadosFrete(Double valorFrete, Integer diasEntrega) {
+		this.dadosDeEntregaDAO.saveDadosDeEntrega(valorFrete, diasEntrega);
+	}
 }
