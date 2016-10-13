@@ -36,6 +36,7 @@ public class CalculadorPrecoFreteSteps {
     // Possiveis retornos
     private double precoFrete;
     private Throwable throwable;
+    private String resultadoSalvarFrete;
 
     @Before
     public void setUp() {
@@ -105,7 +106,21 @@ public class CalculadorPrecoFreteSteps {
         invocarServicoCorreios();
 
         try {
-            calculadorFretePrazo.salvarDadosFrete(Double.valueOf(this.precoFrete), 10);
+            this.resultadoSalvarFrete = calculadorFretePrazo.salvarDadosFrete(Double.valueOf(this.precoFrete), 10);
+        } catch (Throwable exc) {
+            this.throwable = exc;
+        }
+    }
+
+    @When("^quando banco de dados estiver no ar e o cliente perguntar qual o valor do frete e quiser salvar")
+    public void cliente_solicita_preco_frete_do_e_armazenamento_em_banco_no_ar() throws Throwable {
+        configuraWireMockCorreioValido();
+        configura_mock_DadosEntregaDao_Com_Banco_No_Ar();
+
+        invocarServicoCorreios();
+
+        try {
+            this.resultadoSalvarFrete = calculadorFretePrazo.salvarDadosFrete(Double.valueOf(this.precoFrete), 10);
         } catch (Throwable exc) {
             this.throwable = exc;
         }
@@ -149,6 +164,11 @@ public class CalculadorPrecoFreteSteps {
     @Then("^deveria apresentar um erro com a mensagem:$")
     public void should_show_an_error(String message){
         Assertions.assertThat(throwable).isNotNull().hasMessage(message);
+    }
+
+    @Then("^deveria apresentar o resultado de armazenamento:$")
+    public void deveria_apresentar_resultado_de_armazenamento_em_base_de_dados(String message){
+        assertEquals("Preco deveria ser igual a "+message, message, resultadoSalvarFrete);
     }
 
     private void configuraWireMockCorreioValido() {
@@ -200,6 +220,12 @@ public class CalculadorPrecoFreteSteps {
     private void configura_mock_DadosEntregaDao_Com_Banco_Fora() {
         Mockito
             .doThrow(new RuntimeException("java.sql.SQLException: Falha ao conectar com o banco de dados"))
+            .when(dadosEntregaDaoMock).saveDadosDeEntrega(Mockito.anyDouble(), Mockito.anyInt());
+    }
+
+    private void configura_mock_DadosEntregaDao_Com_Banco_No_Ar() {
+        Mockito
+            .doNothing()
             .when(dadosEntregaDaoMock).saveDadosDeEntrega(Mockito.anyDouble(), Mockito.anyInt());
     }
 }

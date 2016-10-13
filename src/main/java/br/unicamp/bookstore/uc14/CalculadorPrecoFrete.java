@@ -80,7 +80,8 @@ public class CalculadorPrecoFrete {
         return Integer.parseInt(resultadoConsultaCorreio.getServicos().getCServico().get(0).getErro());
 	}
 
-	public void salvarDadosFrete(Double valorFrete, Integer diasEntrega) {
+	public String salvarDadosFrete(Double valorFrete, Integer diasEntrega) {
 		this.dadosDeEntregaDAO.saveDadosDeEntrega(valorFrete, diasEntrega);
+		return "Frete gravado com sucesso!";
 	}
 }

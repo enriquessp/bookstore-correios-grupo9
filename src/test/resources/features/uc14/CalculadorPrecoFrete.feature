@@ -75,6 +75,17 @@ Scenario: Calcular o valor do frete e tentar salva-lo com o banco de dados fora 
 	java.sql.SQLException: Falha ao conectar com o banco de dados
 	"""
 
+Scenario: Calcular o valor do frete e tentar salva-lo com o banco de dados no ar
+	Given Dado um produto valido com peso 10 largura 5 altura 5 comprimento 10 e cep:
+	"""
+	1232134
+	"""
+	When quando banco de dados estiver no ar e o cliente perguntar qual o valor do frete e quiser salvar
+	Then deveria apresentar o resultado de armazenamento:
+	"""
+	Frete gravado com sucesso!
+	"""
+
 Scenario: Calcular o frete com tipo de entregas inválido
 	Given Dado um produto valido com peso 10 largura 5 altura 5 comprimento 10 e cep:
 	"""
