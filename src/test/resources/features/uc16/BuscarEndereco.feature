@@ -5,8 +5,18 @@ Feature: Calculador de preco do frete
 
 Scenario: Buscar endereço
 	Given Dado o seguinte CEP valido 13220901
-	When quando o sistema solicitar qual o endereço de entrega
+	When Quando o banco de dados dos correios estiver no ar
+    And e o sistema solicitar qual o endereço de entrega
 	Then o resultado deve ser:
 	"""
 	Rua nome da rua, N 200 - Bairro, Cidade/ES
 	"""
+
+Scenario: Buscar endereço com banco de dados dos correios fora
+  Given Dado o seguinte CEP valido 13220901
+  When Quando o banco de dados dos correios estiver fora do ar
+  And e o sistema solicitar qual o endereço de entrega
+  Then deveria apresentar mensage de erro ser:
+  """
+  Connection timeout
+  """
