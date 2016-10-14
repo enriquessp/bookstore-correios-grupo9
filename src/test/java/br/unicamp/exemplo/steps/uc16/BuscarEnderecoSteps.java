@@ -6,8 +6,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static org.junit.Assert.assertNotNull;
 
-import org.assertj.core.api.Assertions;
-
 import com.github.tomakehurst.wiremock.http.Fault;
 
 import br.com.correios.ws.CalcPrecoPrazoWSSoap;
