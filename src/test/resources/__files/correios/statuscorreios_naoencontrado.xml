@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<sroxml>
+    <versao>1.0</versao>
+    <qtd>2</qtd>
+    <TipoPesquisa>Lista de Objetos</TipoPesquisa>
+    <TipoResultado>Todos os eventos</TipoResultado>
+    <objeto>
+        <numero></numero>
+        <evento>
+            <tipo></tipo>
+            <status></status>
+            <data></data>
+            <hora></hora>
+            <descricao>O objeto nao e reconhecido pelos correios</descricao>
+            <local></local>
+            <codigo></codigo>
+            <cidade></cidade>
+            <uf></uf>
+        </evento>
+    </objeto>
+</sroxml>

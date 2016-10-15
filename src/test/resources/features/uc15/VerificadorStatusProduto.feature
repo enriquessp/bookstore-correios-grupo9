@@ -31,7 +31,7 @@ Scenario: Consultar status de entrega ainda não identificado pelos correios
 	AA100833276BR
 	"""
 	When quando o cliente perguntar qual o status da entrega
-	Then o resultado deve ser
+	Then o resultado deve ser:
 	"""
-	O objeto não é reconhecido pelos correios
+	O objeto nao e reconhecido pelos correios
 	"""

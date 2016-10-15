@@ -19,3 +19,11 @@ Casos de teste UC-15
 	1 - Consultar status da entrega
 		Entradas:	CODIGO DE RASTREIO
 		Saída: 		CODIGO DE RASTREIO, STATUS DA ENTREGA
+		
+Casos de teste UC-16
+
+	1 - Buscar endereço
+		Entradas:												CEP
+		SAÍDA PADRÃO:												ENDEREÇO
+		SAÍDA ALT A (Validação de parametros):									MENSAGEM ERRO, CODIGO ERRO.
+		SAÍDA ALT B (Validação de integraçãoo com correios):							MENSAGEM

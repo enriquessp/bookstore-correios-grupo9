@@ -9,13 +9,16 @@ import br.unicamp.util.ServiceLocatorUtil;
  */
 public class CorreiosUtil {
 
-    public static final String FILEPATH = "correios/calculofrete.xml";
+    public static final String FILEPATH_CALCULO_VALIDO = "correios/calculofrete.xml";
     public static final String URL_CORREIOS = "http://localhost:8888/correios";
     public static final String FILEPATH_STATUS = "correios/statuscorreios.xml";
+    public static final String FILEPATH_STATUS_NAO_ENCONTRADO = "correios/statuscorreios_naoencontrado.xml";
+    public static final String FILEPATH_CALCULO_CEP_INVALIDO = "correios/calculofrete_erro_cep_invalido.xml";
+    public static final String FILEPATH_CALCULO_TIPO_ENTREGA_INVALIDO = "correios/calculofrete_erro_tipo_entrega_invalido.xml";
 
     public static CalcPrecoPrazoWSSoap generateServicoWsCorreio(String URL) {
-	final CalcPrecoPrazoWSSoap calcPrecoPrazoWSSoap = new CalcPrecoPrazoWS().getCalcPrecoPrazoWSSoap12();
-	ServiceLocatorUtil.configurarUrlEndpoint(calcPrecoPrazoWSSoap, URL);
-	return calcPrecoPrazoWSSoap;
+        final CalcPrecoPrazoWSSoap calcPrecoPrazoWSSoap = new CalcPrecoPrazoWS().getCalcPrecoPrazoWSSoap12();
+        ServiceLocatorUtil.configurarUrlEndpoint(calcPrecoPrazoWSSoap, URL);
+        return calcPrecoPrazoWSSoap;
     }
 }

@@ -1,17 +1,17 @@
 package br.unicamp.exemplo.steps.uc16;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import com.github.tomakehurst.wiremock.http.Fault;
+import org.assertj.core.api.Assertions;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
-import br.com.correios.ws.CalcPrecoPrazoWSSoap;
+import br.unicamp.bookstore.dao.EnderecosDosCorreiosDao;
 import br.unicamp.bookstore.uc16.BuscarEndereco;
-import br.unicamp.exemplo.util.CorreiosUtil;
 import cucumber.api.java.Before;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -27,13 +27,17 @@ public class BuscarEnderecoSteps {
     // Possiveis retornos
     private String endereco;
     private Throwable throwable;
-    
+
+    @Mock
+    private EnderecosDosCorreiosDao enderecosDosCorreiosDao;
+
     @Before
     public void setUp() {
-    	final CalcPrecoPrazoWSSoap servicoCorreiosWS = CorreiosUtil.generateServicoWsCorreio(CorreiosUtil.URL_CORREIOS);
+        // Inicializa os mocks sobre as classes annotadas com @Mock
+	MockitoAnnotations.initMocks(this);
 
-    	buscarEndereco = new BuscarEndereco();
-        	throwable = null;
+    	buscarEndereco = new BuscarEndereco(enderecosDosCorreiosDao);
+    	throwable = null;
     }
 
     @Given("^Dado o seguinte CEP valido (\\d+)$")
@@ -42,23 +46,60 @@ public class BuscarEnderecoSteps {
         assertNotNull(this.cep);
     }
     
-    @When("^quando o sistema solicitar qual o endereço de entrega$")
-    public void sistema_solicita_cep() throws Throwable {
-    	configuraWireMockCorreioValido();
-    	
-    	this.endereco = buscarEndereco.buscarEndereco(cep);
+    @Given("^Dado um cep invalido (\\d+)$")
+    public void tenho_um_cep_invalido(String cep) {
+        this.cep = cep;
+        assertNotNull(this.cep);
+    }
+    
+    @And("^e o sistema solicitar qual o endereço de entrega$")
+    public void sistema_solicita_cep() {
+	try {
+	    this.endereco = buscarEndereco.buscarEndereco(cep);
+	} catch (Throwable exc) {
+	    throwable = exc;
+	}
+    }
+
+    @When("^Quando o banco de dados dos correios estiver no ar$")
+    public void banco_dos_correios_no_ar() {
+	configuraMockCorreioEnderecoValido(cep);
+    }
+
+    @When("^Quando o banco de dados dos correios estiver fora do ar$")
+    public void banco_dos_correios_fora_do_ar() {
+	configuraMockBancoDeDadosCorreioFora();
+    }
+
+    @When("^quando o cliente buscar o endereco$")
+    public void cliente_buscar_endereco() {
+    	configuraMockCorreioEnderecoInvalido(cep);
     }
     
     @Then("^o resultado deve ser:$")
-    public void exibe_resultado(String message){
-    	//assertEquals("Rua nome da rua, N 200 - Bairro, Cidade/ES", endereco);
+    public void exibe_resultado(String message) {
+	assertEquals("Deveria ter endereco igual", message, endereco);
     }
 
-    private void configuraWireMockCorreioValido() {
-        stubFor(post(urlMatching("/correios")).willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/soap+xml").withBodyFile(CorreiosUtil.FILEPATH)));
+    @Then("^deveria apresentar mensage de erro ser:$")
+    public void exibir_mensagem_erro(String message) {
+	Assertions.assertThat(throwable).isNotNull().hasMessage(message);
     }
 
-    private void configuraWireMockCorreioFora() {
-        stubFor(post(urlMatching("/correios")).willReturn(aResponse().withFault(Fault.EMPTY_RESPONSE)));
+    @Then("^deve apresentar um erro com a mensagem:$")
+    public void exibir_mensagem_erro_invalido(String message) {
+    	assertEquals(message, endereco);
+    }
+
+    private void configuraMockCorreioEnderecoInvalido(String cep) {
+    Mockito.when(enderecosDosCorreiosDao.recuperaEndereco(cep)).thenReturn("CEP invalido");
+    }
+
+    private void configuraMockCorreioEnderecoValido(String cep) {
+    Mockito.when(enderecosDosCorreiosDao.recuperaEndereco(cep)).thenReturn("Rua nome da rua, N 200 - Bairro, Cidade/ES");
+    }
+
+    private void configuraMockBancoDeDadosCorreioFora() {
+	Mockito.when(enderecosDosCorreiosDao.recuperaEndereco(cep)).thenThrow(new RuntimeException("Connection timeout"));
     }
 }
