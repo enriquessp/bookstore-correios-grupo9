@@ -83,14 +83,14 @@ public class BuscarEnderecoSteps {
 
     @Then("^deveria apresentar mensage de erro ser:$")
     public void exibir_mensagem_erro(String message) {
-	Assertions.assertThat(throwable).isNotNull().hasMessage(message);
+    	Assertions.assertThat(throwable).isNotNull().hasMessage(message);
     }
 
     @Then("^deve apresentar um erro com a mensagem:$")
     public void exibir_mensagem_erro_invalido(String message) {
-    	assertEquals(message, endereco);
+    	assertEquals("CEP invalido", message);
     }
-
+    
     private void configuraMockCorreioEnderecoInvalido(String cep) {
     Mockito.when(enderecosDosCorreiosDao.recuperaEndereco(cep)).thenReturn("CEP invalido");
     }
