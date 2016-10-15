@@ -13,9 +13,6 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.Any;
-
-import java.sql.SQLException;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.Assert.assertEquals;
