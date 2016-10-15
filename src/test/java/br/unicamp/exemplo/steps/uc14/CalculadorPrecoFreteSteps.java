@@ -1,22 +1,27 @@
 package br.unicamp.exemplo.steps.uc14;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import org.assertj.core.api.Assertions;
+import org.mockito.Mockito;
+
+import com.github.tomakehurst.wiremock.http.Fault;
+
 import br.com.correios.ws.CalcPrecoPrazoWSSoap;
 import br.unicamp.bookstore.dao.DadosDeEntregaDAO;
 import br.unicamp.bookstore.dominio.Produto;
 import br.unicamp.bookstore.uc14.CalculadorPrecoFrete;
 import br.unicamp.exemplo.util.CorreiosUtil;
-import com.github.tomakehurst.wiremock.http.Fault;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.assertj.core.api.Assertions;
-import org.mockito.Mockito;
-
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class CalculadorPrecoFreteSteps {
 

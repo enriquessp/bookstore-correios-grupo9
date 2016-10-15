@@ -1,21 +1,20 @@
 package br.unicamp.exemplo.steps.uc16;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import org.assertj.core.api.Assertions;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import br.unicamp.bookstore.dao.EnderecosDosCorreiosDao;
-
 import br.unicamp.bookstore.uc16.BuscarEndereco;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.assertj.core.api.Assertions;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-
-import java.sql.SQLException;
 
 public class BuscarEnderecoSteps {
 
@@ -38,7 +37,7 @@ public class BuscarEnderecoSteps {
 	MockitoAnnotations.initMocks(this);
 
     	buscarEndereco = new BuscarEndereco(enderecosDosCorreiosDao);
-	throwable = null;
+    	throwable = null;
     }
 
     @Given("^Dado o seguinte CEP valido (\\d+)$")
@@ -72,6 +71,11 @@ public class BuscarEnderecoSteps {
 	configuraMockBancoDeDadosCorreioFora();
     }
 
+    @When("^quando o cliente buscar o endereco$")
+    public void cliente_buscar_endereco() {
+    	configuraMockCorreioEnderecoInvalido(cep);
+    }
+    
     @Then("^o resultado deve ser:$")
     public void exibe_resultado(String message) {
 	assertEquals("Deveria ter endereco igual", message, endereco);
@@ -79,7 +83,16 @@ public class BuscarEnderecoSteps {
 
     @Then("^deveria apresentar mensage de erro ser:$")
     public void exibir_mensagem_erro(String message) {
-	Assertions.assertThat(throwable).isNotNull().hasMessage(message);
+    	Assertions.assertThat(throwable).isNotNull().hasMessage(message);
+    }
+
+    @Then("^deve apresentar um erro com a mensagem:$")
+    public void exibir_mensagem_erro_invalido(String message) {
+    	assertEquals("CEP invalido", message);
+    }
+    
+    private void configuraMockCorreioEnderecoInvalido(String cep) {
+    Mockito.when(enderecosDosCorreiosDao.recuperaEndereco(cep)).thenReturn("CEP invalido");
     }
 
     private void configuraMockCorreioEnderecoValido(String cep) {
