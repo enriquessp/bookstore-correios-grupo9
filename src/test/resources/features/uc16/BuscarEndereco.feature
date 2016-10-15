@@ -20,3 +20,12 @@ Scenario: Buscar endereço com banco de dados dos correios fora
   """
   Connection timeout
   """
+  
+Scenario: Buscar endereço com cep inválido
+	Given Dado o seguinte CEP inválido 10101010
+	When Quando o banco de dados dos correios estiver no ar
+    And e o sistema solicitar qual o endereço de entrega
+	Then o resultado deve ser:
+	"""
+	Endereço não encontrado.
+	"""

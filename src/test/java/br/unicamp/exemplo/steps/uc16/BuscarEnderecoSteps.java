@@ -47,6 +47,12 @@ public class BuscarEnderecoSteps {
         assertNotNull(this.cep);
     }
     
+    @Given("^Dado o seguinte CEP inválido (\\d+)$")
+    public void tenho_um_cep_invalido(String cep) {
+        this.cep = cep;
+        assertNotNull(this.cep);
+    }
+    
     @And("^e o sistema solicitar qual o endereço de entrega$")
     public void sistema_solicita_cep() {
 	try {
@@ -77,7 +83,11 @@ public class BuscarEnderecoSteps {
     }
 
     private void configuraMockCorreioEnderecoValido(String cep) {
-        Mockito.when(enderecosDosCorreiosDao.recuperaEndereco(cep)).thenReturn("Rua nome da rua, N 200 - Bairro, Cidade/ES");
+    	if (!cep.equals("10101010")) {
+    		Mockito.when(enderecosDosCorreiosDao.recuperaEndereco(cep)).thenReturn("Rua nome da rua, N 200 - Bairro, Cidade/ES");
+    	} else {
+    		Mockito.when(enderecosDosCorreiosDao.recuperaEndereco(cep)).thenReturn("Endereço não encontrado.");    		
+    	}
     }
 
     private void configuraMockBancoDeDadosCorreioFora() {
